@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Country from './Country/Country';
+import Country from '../Country/Country';
 
 const Home = () => {
     const [countries, setCountries] = useState([]);
@@ -13,23 +13,7 @@ const Home = () => {
         const data = await res.json()
         await setCountries(data)
     };
-    console.log(countries)
-    const [mode, setMode] = useState(true);
-    const [toggleBtn, setToggleBtn] = useState('<li class= "fas fa-sun"></li> Light Mode')
-
-    const toggleMode = ()=>{
-        if(mode){
-            document.documentElement.classList.add('dark');
-            setToggleBtn('<li class= "fas fa-moon"></li> Dark Mode')
-            setMode(current=> current = !current)
-        }
-        if(!mode){
-            document.documentElement.classList.remove('dark');
-            setToggleBtn('<li class= "fas fa-sun"></li> Light Mode')
-            setMode(current=> current = !current)
-        }
-    };
-
+    
     const searchCountry = async term => {
         if( term.length < 3 || term === '') return 
         const res = await fetch(`https://restcountries.com/v2/name/${term}`)
@@ -46,14 +30,7 @@ const Home = () => {
 
     return (
         <div className="bg-gray-100 dark:bg-gray-800 dark:text-white">
-            <div className="bg-white dark:bg-gray-700 dark:text-white py-7 px-12 w-screen shadow-md mb-16">
-                <div className="flex container mx-auto ">
-                    <h1 className="font-bold text-xl">Where in the world?</h1>
-                    <div className="ml-auto font-medium">
-                        <button onClick={()=> toggleMode()} dangerouslySetInnerHTML={{__html: toggleBtn}}></button>
-                    </div>
-                </div>
-            </div>
+            
             <div className=" flex container mx-auto px-12 mb-16">
                 <i className=" fa fa-search my-auto -mr-9 z-10 pl-2 pr-3 py-5 rounded-md text-gray-400"></i>
                 <input type="text" placeholder="search for a country..." className="pl-10 p-2 rounded-md shadow-md w-1/3 dark:bg-gray-700" onChange={(term)=> searchCountry(term.target.value)}/>
@@ -67,7 +44,7 @@ const Home = () => {
                 </select>
             </div>
             <div className="container grid grid-cols-4 gap-10 mx-auto px-12">
-                {
+               {
                     countries.map((country, index)=> <Country key={index} country={country}/>)
                 }
 
